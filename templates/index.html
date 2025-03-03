@@ -4,65 +4,51 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sentiment Analysis</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
             text-align: center;
             margin: 50px;
         }
-        h1 {
-            color: #333;
-        }
-        form {
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-            display: inline-block;
-        }
         textarea {
-            width: 100%;
+            width: 300px;
             height: 100px;
-            padding: 10px;
-            border-radius: 5px;
-            border: 1px solid #ccc;
             font-size: 16px;
-            resize: none;
+            padding: 10px;
         }
         button {
-            background: #28a745;
+            background-color: green;
             color: white;
+            padding: 10px;
             border: none;
-            padding: 10px 20px;
-            font-size: 16px;
             cursor: pointer;
-            margin-top: 10px;
-            border-radius: 5px;
-        }
-        button:hover {
-            background: #218838;
-        }
-        .result {
-            margin-top: 20px;
             font-size: 18px;
-            color: #333;
+        }
+        #result {
+            font-size: 24px;
+            font-weight: bold;
+            margin-top: 20px;
         }
     </style>
 </head>
 <body>
-
     <h1>Sentiment Analysis</h1>
-    <form action="/predict" method="post">
-        <textarea name="text" placeholder="Enter your review..."></textarea><br>
-        <button type="submit">Analyze Sentiment</button>
-    </form>
+    <textarea id="textInput" placeholder="Enter text here..."></textarea>
+    <br>
+    <button onclick="analyzeSentiment()">Analyze Sentiment</button>
+    <div id="result"></div>
 
-    {% if result %}
-    <div class="result">
-        <strong>Prediction:</strong> {{ result }}
-    </div>
-    {% endif %}
+    <script>
+        function analyzeSentiment() {
+            var text = $("#textInput").val();
 
+            $.post("/predict", { text: text }, function(response) {
+                $("#result").html(response);  // Display sentiment
+            }).fail(function() {
+                $("#result").html("Error analyzing sentiment.");
+            });
+        }
+    </script>
 </body>
 </html>
