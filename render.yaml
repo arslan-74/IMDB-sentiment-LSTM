@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: imdb-sentiment-lstm
+    runtime: python
+    env: python
+    region: oregon  # Change this based on your preferred region
+    buildCommand: "pip install -r requirements.txt"
+    startCommand: "gunicorn app:app"
+    envVars:
+      - key: PORT
+        value: 10000
